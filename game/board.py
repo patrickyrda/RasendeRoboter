@@ -35,7 +35,7 @@ class Board:
     def place_robot_random(tab):
         # place robot in random position
         for i in range(4):
-            int place = 0
+            place = 0
             while(place==0):
                 i = random.randint(1,16)
                 j = random.randint(1,16)
@@ -124,10 +124,10 @@ class Board:
         for i in range(len(liste)):
             nb_rotation = random.randint(0,3)
             liste[i] = turn_board(liste[i],nb_rotation)
-        int a=5
-        int b=5
-        int c=5
-        int d=5
+        a=5
+        b=5
+        c=5
+        d=5
         a = random.randint(0,3)
         while(b == a):
             b =random.randint(0,3)
