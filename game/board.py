@@ -4,7 +4,6 @@ import numpy as np
 import copy
 import random
 '''
-
 Top Left barrier = 1
 Top Right barrier = 2
 Down Right barrier = 3
