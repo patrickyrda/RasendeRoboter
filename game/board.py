@@ -34,13 +34,13 @@ class Board:
     
     def place_robot_random(tab):
         # place robot in random position
-        for i in range(4):
+        for x in range(4):
             place = 0
             while(place==0):
                 i = random.randint(1,16)
                 j = random.randint(1,16)
                 if tab[i][j][1]==0 :
-                    tab[i][j][1] = i+1
+                    tab[i][j][1] = x+1
         return tab
         
         
@@ -78,7 +78,7 @@ class Board:
                     tab[i][j][1] = 0
         x = random.randint(0,len(liste))
         y = random.randint(5,8)
-        tab[liste[x][0]][liste[x][1]] = y
+        tab[liste[x][0]][liste[x][1]][1] = y
         return tab
 
     
