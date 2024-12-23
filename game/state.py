@@ -11,9 +11,21 @@ class State:
         self.target = target
         self.target_color = color
          
+    def place_robot_random(self):
+        # place robot in random position
+        for robot in self.robots :
+            place = 0
+            while(place==0):
+                i = random.randint(0,15)
+                j = random.randint(0,15)
+                if self.board[i][j].has_robot == 10 :
+                    tab[i][j].has_robot = robot
+                    place = 1
+        return 
+    
     def get_robot_coords(self) -> tuple:
-
         return tuple((robot.x, robot.y) for robot in self.robots)
+        
     def __hash__(self):
         return hash(self.get_robot_coords())
 
