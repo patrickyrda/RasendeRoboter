@@ -47,12 +47,75 @@ class Board:
         self.board[14][11].val = obstacles["B_R_Barrier"]
         self.board[15][5].val = obstacles["B_R_Barrier"]
         self.board[15][14].val = obstacles["B_L_Barrier"]
+
+        self.board[6][11].has_target = 1
+
+        self.board1 = [[self.board[i][j].val for j in range(8)] for i in range(8)]
+        self.board2 = [[self.board[i][j+8].val for j in range(8)] for i in range(8)]
+        self.board3 = [[self.board[i+8][j].val for j in range(8)] for i in range(8)]
+        self.board4 = [[self.board[i+8][j+8].val for j in range(8)] for i in range(8)]
+        
+        
+
+
+        
+    
+        
+    def turn_board(self,tab):
+        nb_rotation = random.randint(0,3)
+        for r in range(nb_rotation):
+            self.boardt = [[self.tab[i][j].val for j in range(8)] for i in range(8)]
+            for i in range(8):
+                for j in range(8):
+                    self.tab[i][j].val = self.boardt[8-j-1][i].val
+                    if self.tab[i][j].val == obstacles["T_L_Barrier"] :
+                        self.tab[i][j].val = obstacles["T_R_Barrier"]
+                    elif self.tab[i][j].val == obstacles["T_R_Barrier"] :
+                        self.tab[i][j].val = obstacles["B_R_Barrier"]
+                    elif self.tab[i][j].val == obstacles["B_R_Barrier"] :
+                        self.tab[i][j].val = obstacles["B_L_Barrier"]
+                    elif self.tab[i][j].val == obstacles["B_L_Barrier"] :
+                        self.tab[i][j].val = obstacles["T_L_Barrier"]
+        return self
+
+
+    def assemble_pieces(self):
+        # assemble boardpieces
+        for i in range(8):
+            for j in range(8):
+                self.board[i][j] = self.board1[i][j]
+        for i in range(8):
+            for j in range(8):
+                self.board[i][j+8] = self.board2[i][j]
+        for i in range(8):
+            for j in range(8):
+                self.board[i+8][j] = self.board3[i][j]
+        for i in range(8):
+            for j in range(8):
+                self.board[i+8][j+8] = self.board4[i][j]
         self.board[7][7].val = obstacles["Middle_Barrier"]
         self.board[7][8].val = obstacles["Middle_Barrier"]
         self.board[8][7].val = obstacles["Middle_Barrier"]
         self.board[8][8].val = obstacles["Middle_Barrier"]
-        self.board[6][11].has_target = 1
+        return self
 
+            
+                    
+    def place_robot_random(self):
+    # place robot in random position
+    for x in range(4):
+        place = 0
+        while(place==0):
+            i = random.randint(0,15)
+            j = random.randint(0,15)
+            if self.board[i][j].has == 0 :
+                tab[i][j].val = x+1
+                place = 1
+    return tab
+    
+
+    
+    
     def heuristics_board(self, a : int, b: int) -> list[list[int]]:
         '''
         Functions that determines the heuristics board from the board and returns this board
