@@ -8,9 +8,10 @@ obstacles = {
     "B_R_Barrier" : 4,
     "Middle_Barrier" : 5,
 }
+
  # TODO SIMPLIFY THE HERUSTICS FUNCTION 
 class Node:
-    def __init__(self, val = 0, has_robot= 10, has_target= 11, check = 0):
+    def __init__(self, val = 0, has_robot= 0, has_target= 11, check = 0):
 
         self.val = val
         self.has_robot = has_robot
@@ -98,23 +99,6 @@ class Board:
         self.board[8][7].val = obstacles["Middle_Barrier"]
         self.board[8][8].val = obstacles["Middle_Barrier"]
         return self
-
-            
-                    
-    def place_robot_random(self):
-    # place robot in random position
-    for x in range(4):
-        place = 0
-        while(place==0):
-            i = random.randint(0,15)
-            j = random.randint(0,15)
-            if self.board[i][j].has == 0 :
-                tab[i][j].val = x+1
-                place = 1
-    return tab
-    
-
-    
     
     def heuristics_board(self, a : int, b: int) -> list[list[int]]:
         '''
