@@ -21,3 +21,4 @@ def test_heuristics_board():
     board.print_board()
     print("\n")
     print(board.heuristics_board(0, 0))
+

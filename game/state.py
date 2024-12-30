@@ -1,7 +1,7 @@
 from .board import Board, obstacles
 from .robot import Robot 
 # have to crete init state function that will set variables of robot positions and target
-
+# TODO: TESTE IF THE HAS AND EQ ARE WORKING, i think they are but in case 
 
 class State:
 
@@ -10,25 +10,60 @@ class State:
         self.robots = [Rrobot, Grobot, Brobot, Yrobot]
         self.target = target
         self.target_color = color
-         
-    def get_robot_coords(self) -> tuple:
 
-        return tuple((robot.x, robot.y) for robot in self.robots)
+        # A* variables
+        self.g = 0
+        self.h = 0
+        self.f = 0
+        self.parent = None
+         
+    def get_robot_coords(self, target_robot=None) -> tuple:
+        if target_robot is None:
+            return tuple((robot.x, robot.y) for robot in self.robots)
+        
+        return (self.robots[self.target_color].x, self.robots[self.target_color].y)
+    
+    # TODO: THOSE ONES WORKED BETTER FOR THE GREEDY BFS 
     def __hash__(self):
         return hash(self.get_robot_coords())
-
+    
     def __eq__(self, other):
         # Maybe can complete here to further eliminate useless states like the ones where secondary robots switched places !!!!!!
         if not isinstance(other, State):
             return False
         return self.get_robot_coords() == other.get_robot_coords()
-
     
+    def __lt__(self, other):
+        return self.f < other.f    
+    '''
+    def _cmp_key(self):
+        result = f"{self.f:02}"
+        result += "".join(f"{x:02}{y:02}" for x, y in self.get_robot_coords())
+        # print("\n", result)
+        return result
+    
+    def __hash__(self):
+        return hash(self._cmp_key())
+    def __eq__(self, other):
+        if not isinstance(other, State):
+            return False
+        return self._cmp_key() == other._cmp_key()
+    def __lt__(self, other):
+        return self._cmp_key() < other._cmp_key()
 
     # TODO : USE ONLY A SINGLE FUNCTION, LIKE IN THE ROBOT CLASS, AND USE THE ROBOTS MOVE FUNCTION INSIDE OF IT SINCE THE CODE IS BASICALLY THE SAME AND IT RETURNS COORDS
-
+    '''
     def slide_robot_right(self, robot : Robot):
-        
+        """
+        This function moves the robot to the right as much as possible, given the obstacles present on the board.
+        It will stop when it hits a barrier or another robot. 
+
+        Parameters:
+        robot (Robot): The robot to move
+
+        Returns:
+        None
+        """
         stop = False
         starty = robot.y
         while not stop:
@@ -41,6 +76,16 @@ class State:
         
 
     def slide_robot_left(self, robot : Robot):
+        """
+        This function moves the robot to the left as much as possible, given the obstacles present on the board.
+        It will stop when it hits a barrier or another robot.
+
+        Parameters:
+        robot (Robot): The robot to move
+
+        Returns:
+        None
+        """
         stop = False
         starty = robot.y
         while not stop:
@@ -52,7 +97,16 @@ class State:
         self.board.board[robot.x][robot.y].has_robot = robot.color
 
     def slide_robot_down(self, robot : Robot):
+        """
+        This function moves the robot down as much as possible, given the obstacles present on the board.
+        It will stop when it hits a barrier or another robot.
 
+        Parameters:
+        robot (Robot): The robot to move
+
+        Returns:
+        None
+        """
         stop = False
         startx = robot.x
         while not stop:
@@ -64,6 +118,16 @@ class State:
         self.board.board[robot.x][robot.y].has_robot = robot.color
 
     def slide_robot_up(self, robot : Robot):
+        """
+        This function moves the robot up as much as possible, given the obstacles present on the board.
+        It will stop when it hits a barrier or another robot.
+
+        Parameters:
+        robot (Robot): The robot to move
+
+        Returns:
+        None
+        """
         stop = False
         startx = robot.x
         while not stop:
@@ -75,7 +139,28 @@ class State:
         self.board.board[robot.x][robot.y].has_robot = robot.color
 
     def check_setup(self):
+        """
+        Assign the robots positions to the board has_robot attribute
+        Check is used to represent the initial position of the robots
+        """
         for robot in self.robots:
             self.board.board[robot.x][robot.y].has_robot = robot.color
             self.board.board[robot.x][robot.y].check = 1  
-            # TODO: CANT FORGT TO MOVE THE .CHECK FROM THE CODE 
+            # TODO: CANT FORGT TO MOVE THE .CHECK FROM THE CODE, AND ADD HERE IN THE INIT OF THE OBECT
+
+    def set_as(self, g, h, parent) -> None:
+        """
+        Set the A* values of the state.
+
+        Parameters:
+        g (int): The cost of the path from the initial state to this state.
+        h (int): The heuristic value of this state.
+        parent (State): The parent state of this state.
+
+        Returns:
+        None
+        """
+        self.g = g
+        self.h = h
+        self.f = g + h
+        self.parent = parent

@@ -52,12 +52,17 @@ class Board:
         self.board[8][7].val = obstacles["Middle_Barrier"]
         self.board[8][8].val = obstacles["Middle_Barrier"]
         self.board[6][11].has_target = 1
-
+# Legacy function that is replaced by the heuristics_board_new
     def heuristics_board(self, a : int, b: int) -> list[list[int]]:
         '''
-        Functions that determines the heuristics board from the board and returns this board
-        Takes the initial row position a and the initial col position b as arguments
-        returns a 2D list of the heuristics board
+        Calculates the heuristic value of each position of the board according to a given starting position
+
+        Parameters:
+        a (int): The x-coordinate of the starting position.
+        b (int): The y-coordinate of the starting position.
+
+        Returns:
+        list[list[int]]: A 2D list representing the heuristic values of each position of the board.
         '''
         result_board = np.zeros((16,16), dtype=int)
         result_board[a][b] = 111
@@ -146,7 +151,103 @@ class Board:
                 str(node.val)
                 for node in row
             ))
+    
+    def heur(self, heuris):
+        for i, row in enumerate(heuris):
+            print(" ".join(
+                f"{Fore.RED}{heuris[i][j]}{Style.RESET_ALL}" if self.board[i][j].has_robot == 0 else
+                str(heuris[i][j])
+                for j, _ in enumerate(row)
+            ))
 
+    
+
+    def heuristics_board_new(self, a : int, b: int) -> list[list[int]]:
+        '''
+        Calculates the heuristic value of each position of the board according to a given starting position. This function considers the robots positions as well
+
+        Parameters:
+        a (int): The x-coordinate of the starting position.
+        b (int): The y-coordinate of the starting position.
+
+        Returns:
+        list[list[int]]: A 2D list representing the heuristic values of each position of the board.
+        '''
+        result_board = np.zeros((16,16), dtype=int)
+        result_board[a][b] = 111
+        ongoing = True
+        distance = 0
+        pos_buffer = deque([(a, b)])
+        while(ongoing):
+            distance += 1
+            tmp_pos_buffer = deque()
+            while (pos_buffer):
+                # TODO: HERE CHANGE THE ORDER SO I CAN GET OPTIMAL RETRIEVING
+                x, y = pos_buffer.popleft() 
+                # movement from initial position to up 
+                for i in range (x, 0, -1):
+                    if (self.board[i - 1][y].val in [obstacles["B_L_Barrier"], obstacles["B_R_Barrier"], obstacles["Middle_Barrier"]]) or self.board[i][y].val in [obstacles["T_L_Barrier"], obstacles["T_R_Barrier"]]:
+                        break
+                    elif (self.board[i - 1][y].val == obstacles["T_L_Barrier"] or self.board[i - 1][y].val == obstacles["T_R_Barrier"] or self.board[i-1][y].has_robot != 10):
+                        if (result_board[i - 1][y] == 0):
+                            result_board[i - 1][y] = distance
+                            tmp_pos_buffer.append((i - 1, y))
+                        break
+                    else:
+                        if (result_board[i - 1][y] == 0):
+                            result_board[i - 1][y] = distance
+                            tmp_pos_buffer.append((i - 1, y))
+                # movement from initial position to down
+                for i in range(x, 15, 1):
+                    if (self.board[i + 1][y].val in [obstacles["T_L_Barrier"], obstacles["T_R_Barrier"], obstacles["Middle_Barrier"]]) or self.board[i][y].val in [obstacles["B_L_Barrier"], obstacles["B_R_Barrier"]]:
+                        break
+                    elif (self.board[i + 1][y].val == obstacles["B_L_Barrier"] or self.board[i + 1][y].val == obstacles["B_R_Barrier"] or self.board[i+1][y].has_robot != 10):
+                        if (result_board[i + 1][y] == 0):    
+                            result_board[i + 1][y] = distance
+                            tmp_pos_buffer.append((i + 1, y))
+                        break
+                    else:
+                        if (result_board[i + 1][y] == 0):    
+                            result_board[i + 1][y] = distance
+                            tmp_pos_buffer.append((i + 1, y))
+                # movement from initial position to left
+                
+                for i in range(y, 0, -1):
+                    if (self.board[x][i - 1].val in [obstacles["T_R_Barrier"], obstacles["B_R_Barrier"], obstacles["Middle_Barrier"]]) or self.board[x][i].val in [obstacles["T_L_Barrier"], obstacles["B_L_Barrier"]]:
+                        break
+                    elif (self.board[x][i - 1].val == obstacles["T_L_Barrier"] or self.board[x][i - 1].val == obstacles["B_L_Barrier"] or self.board[x][i-1].has_robot != 10):
+                        if (result_board[x][i - 1] == 0):      
+                            result_board[x][i - 1] = distance
+                            tmp_pos_buffer.append((x, i - 1))
+                        break
+                    else:
+                        if (result_board[x][i - 1] == 0): 
+                            tmp_pos_buffer.append((x, i - 1))
+                            result_board[x][i - 1] = distance
+                # movement from initial position to right
+                
+                for i in range(y, 15, 1):
+                    if (self.board[x][i + 1].val in [obstacles["T_L_Barrier"], obstacles["B_L_Barrier"], obstacles["Middle_Barrier"]]) or self.board[x][i].val in [obstacles["T_R_Barrier"], obstacles["B_R_Barrier"]]:
+                        break
+                    elif (self.board[x][i + 1].val == obstacles["T_R_Barrier"] or self.board[x][i + 1].val == obstacles["B_R_Barrier"] or self.board[x][i+1].has_robot != 10):
+                        if (result_board[x][i + 1] == 0):   
+                            result_board[x][i + 1] = distance
+                            tmp_pos_buffer.append((x, i + 1))   
+                        break
+                    else:
+                        if (result_board[x][i + 1] == 0):   
+                            tmp_pos_buffer.append((x, i + 1))   
+                            result_board[x][i + 1] = distance
+            
+            pos_buffer = tmp_pos_buffer
+
+            if (len(pos_buffer) == 0):
+                ongoing = False
+
+        result_board[a][b] = 0
+        return result_board
+
+    
 
                     
 
