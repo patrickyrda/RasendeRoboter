@@ -3,9 +3,11 @@ from game.state import State
 from game.robot import Robot
 from algorithms.bfs import bfs
 from algorithms.As import As
+from algorithms.dls import dls
 
 board = Board()
 heuristics = board.heuristics_board(6,11)
+# red = Robot(0, 15, 15)
 red = Robot(0, 0, 12)
 # red = Robot(0, 15, 13)
 green = Robot(1, 5, 4)
@@ -40,6 +42,14 @@ def test_as():
 
     print(f"\nThe result has a size of : {len(result)}")
 
+def test_dls():
+    visited = set()
+    result = dls(parent, visited)
+    for noeud in result:
+        print("\n")
+        print(noeud.board.print_board())
+
+    print(f"\nThe result has a size of : {len(result)}")
 
 def test_euristics():
     print("\n")

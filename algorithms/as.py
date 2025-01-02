@@ -20,6 +20,28 @@ def return_path(state : State) -> list[State]:
         current = current.parent
     return path
 
+
+def As(state: State) -> list[State]:
+    ClosedList = set()
+    heur_ini = state.board.heuristics_board_new(state.target[0], state.target[1])
+    x,y = state.get_robot_coords(target_robot=True)
+    val_h = heur_ini[x][y]
+    state.set_as(0, val_h, None)
+    OpenList = SortedList([state])
+    while OpenList:
+        current = OpenList.pop(0)
+        ClosedList.add(current)
+        if is_goal(current):
+            return return_path(current)
+        
+        heuristics_table_current = current.board.heuristics_board_new(current.target[0], current.target[1])
+
+        for neighboor in get_next_states(current, heuristics_table_current):
+            
+            
+
+
+
 def As(state : State) -> list[State]:
     # This first try uses next states already eliminating counter productive moves and heuristics table is not update, may change that later as i think it will improve code
     
@@ -41,7 +63,7 @@ def As(state : State) -> list[State]:
     OpenList = SortedList([state])
     count = 0
     while OpenList :
-        # Here store by DESC order so i pop last with less O time
+        # TODO: Here store by DESC order so i pop last with less O time
         count += 1
         current = OpenList.pop(0)
 

@@ -1,7 +1,7 @@
 from collections import deque
 from .helpers import get_next_states, is_goal
 from game.state import State
-from colorama import Fore, Style, init
+
 # Normally it will be used for the normal level , MAYYBE THATS A GREEDY BFS SINCE IT USES AN HEURISTIC FUNCTION 
 def bfs(state : State) -> list[State]:
     """
