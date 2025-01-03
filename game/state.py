@@ -11,8 +11,8 @@ class State:
         self.target = target
         self.target_color = color
 
-        # A* variables
-        self.g = 0
+        # A* variables, g is initialized with 40 but then replaced inside of the A*
+        self.g = 40 
         self.h = 0
         self.f = 0
         self.parent = None

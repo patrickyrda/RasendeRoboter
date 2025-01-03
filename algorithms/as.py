@@ -20,31 +20,8 @@ def return_path(state : State) -> list[State]:
         current = current.parent
     return path
 
-
+# Slower than greedy BFS probably becaus eof the heuristics determination method 
 def As(state: State) -> list[State]:
-    ClosedList = set()
-    heur_ini = state.board.heuristics_board_new(state.target[0], state.target[1])
-    x,y = state.get_robot_coords(target_robot=True)
-    val_h = heur_ini[x][y]
-    state.set_as(0, val_h, None)
-    OpenList = SortedList([state])
-    while OpenList:
-        current = OpenList.pop(0)
-        ClosedList.add(current)
-        if is_goal(current):
-            return return_path(current)
-        
-        heuristics_table_current = current.board.heuristics_board_new(current.target[0], current.target[1])
-
-        for neighboor in get_next_states(current, heuristics_table_current):
-            
-            
-
-
-
-def As(state : State) -> list[State]:
-    # This first try uses next states already eliminating counter productive moves and heuristics table is not update, may change that later as i think it will improve code
-    
     """
     Implements the A* algorithm to solve the Rasende Roboter game.
     
@@ -54,6 +31,49 @@ def As(state : State) -> list[State]:
     Returns:
     list[State]: The path from the initial state to the goal state
     """
+    ClosedList = set()
+    heur_ini = state.board.heuristics_board_new(state.target[0], state.target[1])
+    x,y = state.get_robot_coords(target_robot=True)
+    val_h = heur_ini[x][y]
+    state.set_as(0, val_h, None)
+    OpenList = SortedList([state])
+    gcount = 0
+    while OpenList:
+        gcount += 1
+        current = OpenList.pop(0)
+        ClosedList.add(current)
+        if is_goal(current):
+            return return_path(current)
+        
+        heuristics_table_current = current.board.heuristics_board_new(current.target[0], current.target[1])
+
+        for neighboor in get_next_states(current, heuristics_table_current):
+
+            if neighboor not in ClosedList and neighboor not in OpenList or neighboor.g > current.g + 1:
+                heur_table_neighboor = neighboor.board.heuristics_board_new(neighboor.target[0], neighboor.target[1])
+                xn, yn = neighboor.get_robot_coords(target_robot=True)
+                heuristic_value = heur_table_neighboor[xn][yn]
+                neighboor.set_as(current.g + 1, heuristic_value, current)
+                OpenList.add(neighboor)
+        print("\nHERE ARE THE OPENLIST AFTER ROUND ", gcount)
+        print(" ".join(str(node.f) for node in OpenList))  
+    return None
+
+
+
+"""
+def As(state : State) -> list[State]:
+    # This first try uses next states already eliminating counter productive moves and heuristics table is not update, may change that later as i think it will improve code
+    
+    
+    Implements the A* algorithm to solve the Rasende Roboter game.
+    
+    Parameters:
+    state (State): The initial state of the game
+    
+    Returns:
+    list[State]: The path from the initial state to the goal state
+    
     ClosedList = set()
 
     h_tt = state.board.heuristics_board_new(state.target[0], state.target[1])
@@ -125,7 +145,7 @@ def As(state : State) -> list[State]:
         print("\n F Closoed is : ", node.f)
     return None
 
-
+"""
 
 
 
