@@ -5,6 +5,8 @@ from algorithms.bfs import bfs
 from algorithms.As import As
 from algorithms.dls import dls
 
+
+
 board = Board()
 # heuristics = board.heuristics_board(6,11)
 # red = Robot(0, 15, 15)

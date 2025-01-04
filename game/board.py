@@ -8,21 +8,21 @@ obstacles = {
     "B_R_Barrier" : 4,
     "Middle_Barrier" : 5,
 }
- # TODO SIMPLIFY THE HERUSTICS FUNCTION 
+# TODO SIMPLIFY THE HERUSTICS FUNCTION
 class Node:
     def __init__(self, val = 0, has_robot= 10, has_target= 11, check = 0):
 
         self.val = val
         self.has_robot = has_robot
-        self.has_target = has_target  
+        self.has_target = has_target
         self.check = check
 
 
 class Board:
     def __init__(self):
-        
+
         self.board = [[Node() for _ in range(16)] for _ in range(16)]
-        
+
         self.board[0][1].val = obstacles["T_R_Barrier"]
         self.board[0][11].val = obstacles["T_R_Barrier"]
         self.board[1][4].val = obstacles["T_R_Barrier"]
@@ -73,8 +73,8 @@ class Board:
             distance += 1
             tmp_pos_buffer = deque()
             while (pos_buffer):
-                x, y = pos_buffer.popleft() 
-                # movement from initial position to up 
+                x, y = pos_buffer.popleft()
+                # movement from initial position to up
                 for i in range (x, 0, -1):
                     if (self.board[i - 1][y].val == obstacles["B_L_Barrier"] or self.board[i - 1][y].val == obstacles["B_R_Barrier"] or self.board[i - 1][y].val == obstacles["Middle_Barrier"]) or self.board[i][y].val in [obstacles["T_L_Barrier"], obstacles["T_R_Barrier"]]:
                         break
@@ -92,43 +92,43 @@ class Board:
                     if (self.board[i + 1][y].val == obstacles["T_L_Barrier"] or self.board[i + 1][y].val == obstacles["T_R_Barrier"] or self.board[i + 1][y].val == obstacles["Middle_Barrier"]) or self.board[i][y].val in [obstacles["B_L_Barrier"], obstacles["B_R_Barrier"]]:
                         break
                     elif (self.board[i + 1][y].val == obstacles["B_L_Barrier"] or self.board[i + 1][y].val == obstacles["B_R_Barrier"]):
-                        if (result_board[i + 1][y] == 0):    
+                        if (result_board[i + 1][y] == 0):
                             result_board[i + 1][y] = distance
                             tmp_pos_buffer.append((i + 1, y))
                         break
                     else:
-                        if (result_board[i + 1][y] == 0):    
+                        if (result_board[i + 1][y] == 0):
                             result_board[i + 1][y] = distance
                             tmp_pos_buffer.append((i + 1, y))
                 # movement from initial position to left
-                
+
                 for i in range(y, 0, -1):
                     if (self.board[x][i - 1].val == obstacles["T_R_Barrier"] or self.board[x][i - 1].val == obstacles["B_R_Barrier"] or self.board[x][i - 1].val == obstacles["Middle_Barrier"]) or self.board[x][i].val in [obstacles["T_L_Barrier"], obstacles["B_L_Barrier"]]:
                         break
                     elif (self.board[x][i - 1].val == obstacles["T_L_Barrier"] or self.board[x][i - 1].val == obstacles["B_L_Barrier"]):
-                        if (result_board[x][i - 1] == 0):      
+                        if (result_board[x][i - 1] == 0):
                             result_board[x][i - 1] = distance
                             tmp_pos_buffer.append((x, i - 1))
                         break
                     else:
-                        if (result_board[x][i - 1] == 0): 
+                        if (result_board[x][i - 1] == 0):
                             tmp_pos_buffer.append((x, i - 1))
                             result_board[x][i - 1] = distance
                 # movement from initial position to right
-                
+
                 for i in range(y, 15, 1):
                     if (self.board[x][i + 1].val == obstacles["T_L_Barrier"] or self.board[x][i + 1].val == obstacles["B_L_Barrier"] or self.board[x][i + 1].val == obstacles["Middle_Barrier"]) or self.board[x][i].val in [obstacles["T_R_Barrier"], obstacles["B_R_Barrier"]]:
                         break
                     elif (self.board[x][i + 1].val == obstacles["T_R_Barrier"] or self.board[x][i + 1].val == obstacles["B_R_Barrier"]):
-                        if (result_board[x][i + 1] == 0):   
+                        if (result_board[x][i + 1] == 0):
                             result_board[x][i + 1] = distance
-                            tmp_pos_buffer.append((x, i + 1))   
+                            tmp_pos_buffer.append((x, i + 1))
                         break
                     else:
-                        if (result_board[x][i + 1] == 0):   
-                            tmp_pos_buffer.append((x, i + 1))   
+                        if (result_board[x][i + 1] == 0):
+                            tmp_pos_buffer.append((x, i + 1))
                             result_board[x][i + 1] = distance
-            
+
             pos_buffer = tmp_pos_buffer
 
             if (len(pos_buffer) == 0):
@@ -136,7 +136,7 @@ class Board:
 
         result_board[a][b] = 0
         return result_board
-    
+
     def print_board(self):
         '''
         Print the board with colors
@@ -252,19 +252,12 @@ class Board:
                     
 
 
-                
-                
 
 
 
 
 
 
-        
-
-
-
-        
 
 
 

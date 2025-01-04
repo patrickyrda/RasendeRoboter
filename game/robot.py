@@ -1,15 +1,10 @@
 from .board import obstacles
 from .board import Node
-colors = {
-    "red": 0,
-    "green": 1,
-    "blue": 2,
-    "yellow": 3
-}
+
 # TODO: HAVE ONLY ONE FUNCTION FOR ALL USING PARAMETERS TO CHANGE DIRECTIONS 
 
 class Robot:
-    def __init__(self, color : int, x : int, y : int):
+    def __init__(self, color : str, x : int, y : int):
         self.x = x
         self.y = y
         self.color = color
@@ -52,7 +47,7 @@ class Robot:
                 stop = True
             else:
                 y -= 1
-        
+
         return x, y
 
 
