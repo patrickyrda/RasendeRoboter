@@ -6,7 +6,7 @@ from algorithms.As import As
 from algorithms.dls import dls
 
 board = Board()
-heuristics = board.heuristics_board(6,11)
+# heuristics = board.heuristics_board(6,11)
 # red = Robot(0, 15, 15)
 red = Robot(0, 0, 12)
 # red = Robot(0, 9, 8)
@@ -15,7 +15,7 @@ green = Robot(1, 5, 4)
 blue = Robot(2, 7, 9)
 yellow = Robot(3, 14, 10)
 # Color red for robot target
-parent = State(board, red, green, blue, yellow, (5, 0), 0)
+parent = State(board, red, green, blue, yellow, (5, 0), 3)
 parent.check_setup()
 def test_bfs():
     print("\nThis is the test bfs")
