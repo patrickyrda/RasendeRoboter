@@ -1,7 +1,9 @@
 from game.state import State
+import time
 from collections import deque 
 from sortedcontainers import SortedList
 from .helpers import get_next_states, is_goal
+from typing import Union
 # TODO: HEURISTICS TABLE HAS TO CHANGE VALUES WHEN ROBOT MOVES
 def return_path(state : State) -> list[State]:
     """
@@ -59,93 +61,55 @@ def As(state: State) -> list[State]:
         print(" ".join(str(node.f) for node in OpenList))  
     return None
 
-
-
-"""
-def As(state : State) -> list[State]:
-    # This first try uses next states already eliminating counter productive moves and heuristics table is not update, may change that later as i think it will improve code
-    
-    
+def As_intorlist(state: State) -> Union[int, list[State]]:
+    """
     Implements the A* algorithm to solve the Rasende Roboter game.
     
     Parameters:
     state (State): The initial state of the game
     
     Returns:
-    list[State]: The path from the initial state to the goal state
-    
+    list[State]: The path from the initial state to the goal state, or an integer if the time limit is exceeded
+    or
+    int: The 'f' value of the first node in OpenList after 80 seconds have elapsed
+    """
     ClosedList = set()
-
-    h_tt = state.board.heuristics_board_new(state.target[0], state.target[1])
-    coord = state.get_robot_coords(target_robot=True)
-    val_h = h_tt[coord[0]][coord[1]]
+    heur_ini = state.board.heuristics_board_new(state.target[0], state.target[1])
+    x, y = state.get_robot_coords(target_robot=True)
+    val_h = heur_ini[x][y]
     state.set_as(0, val_h, None)
     OpenList = SortedList([state])
-    count = 0
-    while OpenList :
-        # TODO: Here store by DESC order so i pop last with less O time
-        count += 1
-        current = OpenList.pop(0)
+    gcount = 0
 
-        print("\nThis is the Current state number : ", count)
-        current.board.print_board()
-        print("\n")
+    start_time = time.time()
+
+    while OpenList:
+        gcount += 1
+        current = OpenList.pop(0)
+        ClosedList.add(current)
+
+        elapsed_time = time.time() - start_time
+        if elapsed_time > 80: 
+            if OpenList:
+                return int(OpenList[0].f)
+            else:
+                return None 
 
         if is_goal(current):
             return return_path(current)
         
-        ClosedList.add(current)
-        heuristics_table = state.board.heuristics_board_new(current.target[0], current.target[1])
-        next = get_next_states(current, heuristics_table)
-        print("\nHere is the next states of round : ", count)
-        
-        countt  = 0
+        heuristics_table_current = current.board.heuristics_board_new(current.target[0], current.target[1])
 
-        for neighboor in next:
-            countt += 1
-            # print("\nThis is next state number : ", countt)
-            # print(neighboor.board.print_board())
-            if neighboor in ClosedList:
-                print("\nAlready in closed list")
-                continue
-            
-            h_t = neighboor.board.heuristics_board_new(neighboor.target[0], neighboor.target[1])
-            coords = neighboor.get_robot_coords(target_robot=True)
-            # print("coords are: ", coords)
-            heuristic = h_t[coords[0]][coords[1]]
-            tentative_g = current.g + 1
-            neighboor.set_as(tentative_g, heuristic, current)
-            
-            
-            if neighboor not in OpenList:
+        for neighboor in get_next_states(current, heuristics_table_current):
+            if neighboor not in ClosedList and (neighboor not in OpenList or neighboor.g > current.g + 1):
+                heur_table_neighboor = neighboor.board.heuristics_board_new(neighboor.target[0], neighboor.target[1])
+                xn, yn = neighboor.get_robot_coords(target_robot=True)
+                heuristic_value = heur_table_neighboor[xn][yn]
+                neighboor.set_as(current.g + 1, heuristic_value, current)
                 OpenList.add(neighboor)
-            elif tentative_g >= neighboor.g:
-                continue
-            
-            
-            # print("\n")
-            # print(h_t)
-            # print("\n")
-            
-            # print("\n")
-            # neighboor.board.print_board()
-            
-            
 
-            
-            # print("\n")
-            # print("\nheuristic is : ", heuristic)
-            # print("\n f is : ", neighboor.f)
-            # print("\ng is : ", neighboor.g)
-        print("\nHERE ARE THE OPENLIST AFTER ROUND ", count)
-        print(" ".join(str(node.f) for node in OpenList))
-    for node in OpenList:
-        print("\n F is : ", node.f)
-    for node in ClosedList:
-        print("\n F Closoed is : ", node.f)
+
     return None
-
-"""
 
 
 

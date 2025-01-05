@@ -5,10 +5,10 @@ from game.robot import Robot
 
 board = Board()
 heuristics = board.heuristics_board(6,11)
-red = Robot(1, 0, 0)
-green = Robot(1, 5, 4)
-blue = Robot(2, 7, 9)
-yellow = Robot(3, 14, 10)
+red = Robot(0, "red", 0, 0)
+green = Robot(1, "green", 5, 4)
+blue = Robot(2, "blue", 7, 9)
+yellow = Robot(3, "yellow", 14, 10)
 
 parent = State(board, red, green, blue, yellow, (6, 11), 1)
 parent.check_setup()

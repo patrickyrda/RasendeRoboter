@@ -9,6 +9,7 @@ class State:
         self.board = board
         self.robots = [Rrobot, Grobot, Brobot, Yrobot]
         self.target = target
+
         self.target_color = color
 
         # A* variables, g is initialized with 40 but then replaced inside of the A*
@@ -18,6 +19,7 @@ class State:
         self.parent = None
          
     def get_robot_coords(self, target_robot=None) -> tuple:
+
         if target_robot is None:
             return tuple((robot.x, robot.y) for robot in self.robots)
         
@@ -72,7 +74,7 @@ class State:
             else:
                 robot.y += 1
         self.board.board[robot.x][starty].has_robot = 10
-        self.board.board[robot.x][robot.y].has_robot = robot.color
+        self.board.board[robot.x][robot.y].has_robot = robot.idx
         
 
     def slide_robot_left(self, robot : Robot):
@@ -94,7 +96,7 @@ class State:
             else:
                 robot.y -= 1
         self.board.board[robot.x][starty].has_robot = 10
-        self.board.board[robot.x][robot.y].has_robot = robot.color
+        self.board.board[robot.x][robot.y].has_robot = robot.idx
 
     def slide_robot_down(self, robot : Robot):
         """
@@ -115,7 +117,7 @@ class State:
             else:
                 robot.x += 1
         self.board.board[startx][robot.y].has_robot = 10
-        self.board.board[robot.x][robot.y].has_robot = robot.color
+        self.board.board[robot.x][robot.y].has_robot = robot.idx
 
     def slide_robot_up(self, robot : Robot):
         """
@@ -136,7 +138,7 @@ class State:
             else:
                 robot.x -= 1
         self.board.board[startx][robot.y].has_robot = 10
-        self.board.board[robot.x][robot.y].has_robot = robot.color
+        self.board.board[robot.x][robot.y].has_robot = robot.idx
 
     def check_setup(self):
         """
@@ -144,7 +146,7 @@ class State:
         Check is used to represent the initial position of the robots
         """
         for robot in self.robots:
-            self.board.board[robot.x][robot.y].has_robot = robot.color
+            self.board.board[robot.x][robot.y].has_robot = robot.idx
             self.board.board[robot.x][robot.y].check = 1  
             # TODO: CANT FORGT TO MOVE THE .CHECK FROM THE CODE, AND ADD HERE IN THE INIT OF THE OBECT
 

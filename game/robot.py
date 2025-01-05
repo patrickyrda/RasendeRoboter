@@ -4,10 +4,11 @@ from .board import Node
 # TODO: HAVE ONLY ONE FUNCTION FOR ALL USING PARAMETERS TO CHANGE DIRECTIONS 
 
 class Robot:
-    def __init__(self, color : str, x : int, y : int):
+    def __init__(self, idx : int,color : str, x : int, y : int):
         self.x = x
         self.y = y
         self.color = color
+        self.idx = idx
     def move_right(self, tab) -> tuple[int, int]:
         """
         This function moves the robot to the right as much as possible, given the obstacles present on the board.
