@@ -71,7 +71,14 @@ class StateDisplayer:
         color = "#FFFFFF"  # Default color for empty cells
 
         if (i, j) == state.target:  # Target cell
-            color = "#FF0000"
+            if (self.state.target_color == 0):
+                color = "red"
+            elif (self.state.target_color == 1):
+                color = "green"
+            elif (self.state.target_color == 2):
+                color = "blue"
+            elif (self.state.target_color == 3):
+                color = "yellow"
         elif node.val == "Middle_Barrier":  # Example obstacle
             color = "#000000"
 

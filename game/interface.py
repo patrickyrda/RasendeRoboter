@@ -32,7 +32,7 @@ class RobotGame:
         self.selected_robot = None
         self.possible_moves = []
         self.move_counter = 0
-        self.robot_red = self.state.robots[0]
+        self.robot = self.state.robots[self.state.target_color]
         self.game_active = False  # Le jeu n'est pas encore activé
         self.victory_label = None
         self.timer_label = None  # Label pour afficher le timer
@@ -162,7 +162,14 @@ class RobotGame:
         color = COLORS["empty"]
 
         if (i, j) == self.state.target:  # Coloration de la cible
-            color = COLORS["target"]
+            if (self.state.target_color == 0):
+                color = "red"
+            elif (self.state.target_color == 1):
+                color = "green"
+            elif (self.state.target_color == 2):
+                color = "blue"
+            elif (self.state.target_color == 3):
+                color = "yellow"
         elif node.val == obstacles["Middle_Barrier"]:
             color = COLORS["Middle_Barrier"]
 
@@ -255,8 +262,8 @@ class RobotGame:
         self.move_counter += 1
         self.counter_label.config(text=f"Moves: {self.move_counter}")
 
-        # Vérifie si le robot rouge a atteint la cible pour afficher un message de victoire
-        if robot == self.robot_red and (new_x, new_y) == self.state.target:
+        # Vérifie si le robot  a atteint la cible pour afficher un message de victoire
+        if robot == self.robot and (new_x, new_y) == self.state.target:
             self.end_game("VICTORY!")  # Affiche "VICTORY!" si la solution est trouvée
             self.has_won = True
             self.start_button.config(state="disabled")  # Désactive le bouton Start à la fin du jeu

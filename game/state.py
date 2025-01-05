@@ -1,5 +1,6 @@
 from .board import Board, obstacles
 from .robot import Robot 
+import random
 # have to crete init state function that will set variables of robot positions and target
 # TODO: TESTE IF THE HAS AND EQ ARE WORKING, i think they are but in case 
 
@@ -166,3 +167,38 @@ class State:
         self.h = h
         self.f = g + h
         self.parent = parent
+
+    def places_robots_random(self):
+        
+        for robot in self.robots:
+            placed = False
+            while not placed:
+                x = random.randint(0, 15)
+                y = random.randint(0, 15)
+
+                ogx, ogy = robot.get_coord()
+                
+                if self.board.board[x][y].val != obstacles["Middle_Barrier"] and self.board.board[x][y].has_robot == 10:
+                    self.board.board[x][y].has_robot = robot.idx
+                    self.board.board[ogx][ogy].has_robot = 10
+                    robot.x = x
+                    robot.y = y
+                    placed = True
+    
+    def place_taget_random(self):
+        placed = False
+        while not placed:
+            x = random.randint(0, 15)
+            y = random.randint(0, 15)
+            if self.board.board[x][y].val != obstacles["Middle_Barrier"] and self.board.board[x][y].has_robot == 10 and self.board.board[x][y].val in [obstacles["T_L_Barrier"], obstacles["T_R_Barrier"], obstacles["B_L_Barrier"], obstacles["B_R_Barrier"]]:
+                self.board.board[x][y].has_robot = 10
+                self.target = (x, y)
+                placed = True
+        
+        self.target_color = random.randint(0, 3)
+
+
+    def change_state(self):
+        self.places_robots_random()
+        self.place_taget_random()
+        self.set_as(40, 0, None)

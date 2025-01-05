@@ -10,11 +10,11 @@ obstacles = {
 }
 # TODO SIMPLIFY THE HERUSTICS FUNCTION
 class Node:
-    def __init__(self, val = 0, has_robot= 10, has_target= 11, check = 0):
+    def __init__(self, val = 0, has_robot= 10, check = 0):
 
         self.val = val
         self.has_robot = has_robot
-        self.has_target = has_target
+        # self.has_target = has_target
         self.check = check
 
 
@@ -51,7 +51,7 @@ class Board:
         self.board[7][8].val = obstacles["Middle_Barrier"]
         self.board[8][7].val = obstacles["Middle_Barrier"]
         self.board[8][8].val = obstacles["Middle_Barrier"]
-        self.board[6][11].has_target = 1
+        # self.board[6][11].has_target = 1
 # Legacy function that is replaced by the heuristics_board_new
     def heuristics_board(self, a : int, b: int) -> list[list[int]]:
         '''
