@@ -1,7 +1,9 @@
+import os
 import tkinter as tk
 
 class StateDisplayer:
     def __init__(self, root, state_list, canvas_size=500, cell_size=30):
+
         self.root = root
         self.state_list = state_list  # List of all states to display
         self.current_index = 0  # To track the current state being displayed
@@ -38,6 +40,15 @@ class StateDisplayer:
         # Create the canvas for drawing the state
         self.canvas = tk.Canvas(self.game_frame, width=self.canvas_size, height=self.canvas_size, bg="#E0E0E0")
         self.canvas.pack()
+
+        # Ajouter le bouton "Rejouer" au-dessus du bouton "Quit"
+        self.restart_button = tk.Button(self.counter_frame, text="Rejouer", font=("Arial", 14), command=self.restart_game)
+        self.restart_button.pack(pady=10)
+
+        # Masquer le bouton "Rejouer" initialement
+        self.restart_button.pack_forget()
+
+
 
     def display_state(self, state):
         """Display the current state on the canvas."""
@@ -78,8 +89,20 @@ class StateDisplayer:
         if self.current_index >= len(self.state_list):
             self.current_index = len(self.state_list) - 1  # Stay at the last state
             self.next_button.config(text="Quit", command=self.quit_game)  # Change button to "Quit"
+            self.show_restart_button()  # Afficher le bouton "Rejouer"
+
         else:
             self.display_state(self.state_list[self.current_index])
+
+    def show_restart_button(self):
+        """Afficher le bouton "Rejouer" lorsque le bouton "Quit" est visible."""
+        self.restart_button.pack()  # Afficher le bouton "Rejouer"
+
+    def restart_game(self):
+        """Redémarrer le jeu en fermant la fenêtre actuelle et en relançant le jeu."""
+        self.root.quit()  # Fermer la fenêtre actuelle
+        self.root.destroy()
+        os.system('python main.py')# Appeler la fonction main pour relancer le jeu
 
     def quit_game(self):
         """Quit the game and close the window."""
