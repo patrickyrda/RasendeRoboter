@@ -1,7 +1,6 @@
 from .board import obstacles
 from .board import Node
 
-# TODO: HAVE ONLY ONE FUNCTION FOR ALL USING PARAMETERS TO CHANGE DIRECTIONS 
 
 class Robot:
     def __init__(self, idx : int,color : str, x : int, y : int):

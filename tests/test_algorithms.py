@@ -2,7 +2,7 @@ from game.board import Board
 from game.state import State
 from game.robot import Robot
 from algorithms.bfs import bfs
-from algorithms.As import As
+from algorithms.asalgo import As
 from algorithms.dls import dls
 
 

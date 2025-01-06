@@ -2,7 +2,6 @@ from collections import deque
 from .helpers import get_next_states, is_goal
 from game.state import State
 
-# TODO: Later delete because it does not work, but i will add in the rapport that it didnt cuz it explores a path even if it does not end, what can happen sometimes 
 def dfs(state: State, visited=None) -> list[State] | None:
     if visited is None:
         visited = set()

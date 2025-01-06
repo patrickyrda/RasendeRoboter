@@ -1,7 +1,6 @@
 from game.state import State
 from copy import deepcopy
 
-# TODO: SIMPLIFY THIS FUNCTION , MAYBE CHANAGE FROM SET TO LIST OR SOMETHING ELSE, 
 def get_next_states(parent : State, heuristics_table : list[list[int]]) -> set[State]:
     """
     Generates the next possible states from the given parent state by attempting to move each robot
@@ -16,7 +15,6 @@ def get_next_states(parent : State, heuristics_table : list[list[int]]) -> set[S
     Returns:
     set[State]: A set of new states generated after moving the robots, excluding counterproductive moves.
     """
-    # TODO: Test if idx can go inside of the for in loop
     next_states = set()
     idx = 0
     for robot in parent.robots:
@@ -57,7 +55,6 @@ def get_next_states(parent : State, heuristics_table : list[list[int]]) -> set[S
         
     return next_states
 
-# TODO: PASS THIS INSIDE OF THE CLASS State 
 def is_goal(state : State) -> bool:
     """
     Checks if the given state is the goal state by comparing the robot at the target position
@@ -85,7 +82,6 @@ def get_next_states_new(parent : State) -> set[State]:
     Returns:
     set[State]: A set of new states generated after moving the robots in all four directions.
     """
-    # TODO: Test if idx can go inside of the for in loop
     next_states = set()
     idx = 0
     for robot in parent.robots:

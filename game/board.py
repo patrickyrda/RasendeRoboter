@@ -8,7 +8,6 @@ obstacles = {
     "B_R_Barrier" : 4,
     "Middle_Barrier" : 5,
 }
-# TODO SIMPLIFY THE HERUSTICS FUNCTION
 class Node:
     def __init__(self, val = 0, has_robot= 10, check = 0):
 
@@ -52,7 +51,6 @@ class Board:
         self.board[8][7].val = obstacles["Middle_Barrier"]
         self.board[8][8].val = obstacles["Middle_Barrier"]
         # self.board[6][11].has_target = 1
-# Legacy function that is replaced by the heuristics_board_new
     def heuristics_board(self, a : int, b: int) -> list[list[int]]:
         '''
         Calculates the heuristic value of each position of the board according to a given starting position
@@ -182,7 +180,6 @@ class Board:
             distance += 1
             tmp_pos_buffer = deque()
             while (pos_buffer):
-                # TODO: HERE CHANGE THE ORDER SO I CAN GET OPTIMAL RETRIEVING
                 x, y = pos_buffer.popleft() 
                 # movement from initial position to up 
                 for i in range (x, 0, -1):

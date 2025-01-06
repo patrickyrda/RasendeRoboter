@@ -1,6 +1,6 @@
 from algorithms.bfs import bfs
 from algorithms.dls import dls
-from algorithms.As import As_intorlist
+from algorithms.asalgo import As_intorlist
 from .new_interface import DifficultySelector
 from .board import Board
 from .robot import Robot

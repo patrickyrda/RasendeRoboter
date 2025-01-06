@@ -4,7 +4,6 @@ from collections import deque
 from sortedcontainers import SortedList
 from .helpers import get_next_states, is_goal
 from typing import Union
-# TODO: HEURISTICS TABLE HAS TO CHANGE VALUES WHEN ROBOT MOVES
 def return_path(state : State) -> list[State]:
     """
     Rebuilds the path from the final state to the root of the state tree.
@@ -22,7 +21,6 @@ def return_path(state : State) -> list[State]:
         current = current.parent
     return path
 
-# Slower than greedy BFS probably becaus eof the heuristics determination method 
 def As(state: State) -> list[State]:
     """
     Implements the A* algorithm to solve the Rasende Roboter game.

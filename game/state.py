@@ -1,8 +1,6 @@
 from .board import Board, obstacles
 from .robot import Robot 
 import random
-# have to crete init state function that will set variables of robot positions and target
-# TODO: TESTE IF THE HAS AND EQ ARE WORKING, i think they are but in case 
 
 class State:
 
@@ -26,7 +24,6 @@ class State:
         
         return (self.robots[self.target_color].x, self.robots[self.target_color].y)
     
-    # TODO: THOSE ONES WORKED BETTER FOR THE GREEDY BFS 
     def __hash__(self):
         return hash(self.get_robot_coords())
     
@@ -149,7 +146,6 @@ class State:
         for robot in self.robots:
             self.board.board[robot.x][robot.y].has_robot = robot.idx
             self.board.board[robot.x][robot.y].check = 1  
-            # TODO: CANT FORGT TO MOVE THE .CHECK FROM THE CODE, AND ADD HERE IN THE INIT OF THE OBECT
 
     def set_as(self, g, h, parent) -> None:
         """
